@@ -1,0 +1,42 @@
+<div class="container">
+
+    <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2 mt-2 ">
+            <label>Nom Film en tapant</label>
+            <input #nom [(ngModel)]="searchTerm" name="searchTerm" class="form-control">
+        </div>
+    </form>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Note</th>
+                        <th>Date de sortie</th>
+                        <th>Genre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for (film of films | searchFilter: searchTerm ; track film.idfilm ; let index = $index) {
+                    <tr>
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ film.idfilm }}</td>
+                        <td>{{ film.nomfilm }}</td>
+                        <td>{{ film.notefilm }}</td>
+                        <td>{{ film.dateSortie | date:'dd/MM/yyyy' }}</td>
+                        <td>{{film.genre?.titregenre}}</td>
+                        @if(authService.isAdmin()){
+                            <td><a class="btn btn-danger" (click)="supprimerFilm(film)">Supprimer</a></td>
+                            <td><a class="btn btn-success" [routerLink]="['/updateFilm',film.idfilm]">Modifier</a></td>
+                        }
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
